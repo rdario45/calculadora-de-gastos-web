@@ -1,0 +1,24 @@
+$line-color: #ececec;
+$border-background-color: #000;
+
+.main {
+  margin: auto;
+  height: 100vh;
+  max-width: 600px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px 8px;
+  border-color: $line-color;
+  background-color: $border-background-color;
+  padding: 10px;
+}
+
+.main-container {
+  height: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px 8px;
+  border-color: $line-color;
+  background-color: #fff;
+  padding: 5px;
+}

@@ -1,0 +1,14 @@
+/* important, modify vendors date-picker */
+.rdtPicker {
+  margin-top: -200px;
+  margin-left: -10px;
+}
+
+.error {
+  position: absolute;
+  color: red;
+}
+
+.border-error {
+  border: 1px solid red;
+}

@@ -1,0 +1,58 @@
+$font-stack: Helvetica, sans-serif;
+$font-size: 12px;
+$primary-color: #ffd900;
+$secondary-color: #000;
+$text-color: #000;
+$line-color: #ececec;
+$background: #ffd90050;
+
+html, body, #root{
+  height: 100vh;  
+  background-color: $background;
+}
+
+body {
+  font: $font-stack;
+  color: $text-color;
+  font-size: $font-size;
+}
+
+/* important, modify vendors boostrap card */
+.card, .card-body {
+  height: 100%;
+}
+
+#flex-container {
+  height: 100%;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+  flex-direction: column;
+  margin: auto;
+}
+
+#flex-container > .flex-item-header {
+	-webkit-flex: 1;
+  flex: 1;
+}
+
+#flex-container > .flex-item-body {
+	-webkit-flex: 1;
+  flex: 8;
+  overflow: auto;
+}
+
+#flex-container > .flex-item-bottom {
+  -webkit-flex: 1;
+	flex: 1;
+}
+
+.bottom-border {
+  border-bottom: 2px solid $line-color;
+}
+
+.buttons-block {
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
