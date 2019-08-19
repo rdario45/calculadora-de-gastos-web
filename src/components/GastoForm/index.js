@@ -5,6 +5,8 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import './index.css'
 
+const numeral = require('numeral');
+
 class GastoForm extends Component {
 
   constructor(props) {
@@ -33,7 +35,8 @@ class GastoForm extends Component {
       maxLength: 100,
     }),
     valor: () => ({
-      required: true
+      required: true,
+      noCero: true
     }),
     fecha: () => ({
       required: true
@@ -43,6 +46,7 @@ class GastoForm extends Component {
   validations = {
     required: (attrib) => attrib.length === 0 ? ['This field is required.'] : [],
     maxLength: (attrib, value) => attrib.length > value ? [`Max length ${value}`] : [],
+    noCero: (attrib) => numeral(attrib).value() <= 0 ? ['This field is required.'] : []
   }
 
   componentDidUpdate(prevProps) {
@@ -104,17 +108,31 @@ class GastoForm extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target
-    /* update field value */
-    this.setState({ [name]: value },
-      () => {
-        /* update field errors */
-        this.setState({
-          errors: {
-            ...this.state.errors,
-            [name]: this.validate(name)
-          }
+    if (name === 'valor') {
+      /* update field value */
+      this.setState({ [name]: numeral(value).format('$0,0') },
+        () => {
+          /* update field errors */
+          this.setState({
+            errors: {
+              ...this.state.errors,
+              [name]: this.validate(name)
+            }
+          })
         })
-      })
+    } else {
+      /* update field value */
+      this.setState({ [name]: value },
+        () => {
+          /* update field errors */
+          this.setState({
+            errors: {
+              ...this.state.errors,
+              [name]: this.validate(name)
+            }
+          })
+        })
+    }
   }
 
   render() {
@@ -125,7 +143,6 @@ class GastoForm extends Component {
         <Container>
           <Row>
             <Col xs={7}>
-              {/* input titulo */}
               <Form.Group>
                 <Form.Control
                   className={[!isEmpty(errors.titulo) && 'border-error']}
@@ -142,7 +159,6 @@ class GastoForm extends Component {
               </Form.Group>
             </Col>
             <Col xs={5}>
-              {/* input tipo */}
               <Form.Group>
                 <Form.Control
                   className={[!isEmpty(errors.tipo) && 'border-error']}
@@ -165,7 +181,6 @@ class GastoForm extends Component {
           </Row>
           <Row>
             <Col xs={12}>
-              {/* input descripcion */}
               <Form.Group>
                 <Form.Control
                   className={[!isEmpty(errors.descripcion) && 'border-error']}
@@ -184,7 +199,6 @@ class GastoForm extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              {/* input fecha */}
               <Form.Group>
                 <Datetime
                   className={[!isEmpty(errors.fecha) && 'border-error']}
@@ -199,7 +213,6 @@ class GastoForm extends Component {
               </Form.Group>
             </Col>
             <Col xs={6}>
-              {/* input valor */}
               <Form.Group>
                 <Form.Control
                   className={[!isEmpty(errors.valor) && 'border-error']}

@@ -42,7 +42,7 @@ class GastosService {
   async save(gasto) {
     try {
       const url = `${global.gConfig.api_url}/gastos`;
-      const body = assign(gasto)
+      const body = assign(gasto, {valor: numeral(gasto.valor).value() })
       const { status, data } = await axios.post(url, {
         headers: {
           'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ class GastosService {
   async update(gasto) {
     try {
       const url = `${global.gConfig.api_url}/gastos`
-      const body = assign(gasto)
+      const body = assign(gasto, {valor: numeral(gasto.valor).value() })
       const { status, data } = await axios.patch(url, {
         headers: {
           'Content-Type': 'application/json'

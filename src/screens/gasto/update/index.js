@@ -7,6 +7,9 @@ import { GoBack, GastoForm } from '../../../components'
 import { gastosServices, commons } from '../../../services';
 import './index.css'
 
+const numeral = require('numeral');
+
+
 const ButtonSection = ({ clickHandler }) => (
   <span>
     <div className="bottom-border" />
@@ -39,7 +42,7 @@ class GastoUpdateScreen extends Component {
 
   onLoadSuccess = (data) => {
     console.log(data)
-    this.setState({ gasto: data })
+    this.setState({ gasto: {...data, valor: numeral(data.valor).format('$0,0') }, })
   }
 
   onEditSuccess = () => {

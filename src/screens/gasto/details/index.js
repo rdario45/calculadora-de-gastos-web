@@ -6,6 +6,8 @@ import { GoBack, GastoForm } from '../../../components'
 import { gastosServices, commons } from '../../../services'
 import './index.css'
 
+const numeral = require('numeral');
+
 class GastoDetailsScreen extends Component {
 
   constructor(props) {
@@ -27,7 +29,7 @@ class GastoDetailsScreen extends Component {
   }
 
   onLoadSuccess = (data) => {
-    this.setState({ gasto: data })
+    this.setState({ gasto: {...data, valor: numeral(data.valor).format('$0,0') }, })
   }
 
   onFailure = (mensaje) => {
