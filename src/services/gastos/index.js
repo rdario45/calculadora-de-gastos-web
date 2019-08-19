@@ -1,6 +1,9 @@
 import { get, assign } from 'lodash'
 import axios from 'axios'
+import moment from 'moment'
 import { commons } from '../'
+
+const numeral = require('numeral');
 
 class GastosService {
 
@@ -29,7 +32,7 @@ class GastosService {
         }
       })
       console.log(`GET ${url} status`, status)
-      return { status, data }
+      return { status, data: this.transfom(data) }
     } catch (error) {
       const statusError = get(error, 'status', commons.UKNOWN)
       return { status: statusError, data: error.message }
@@ -88,6 +91,15 @@ class GastosService {
     }
   }
 
+  transfom = (data) => {
+    return data.map(gasto => {
+      return ({
+        ...gasto,
+        fecha: moment(gasto.fecha).format('YYYY-MM-DD'),
+        valor: numeral(gasto.valor).format('$0,0')
+      })
+    })
+  }
 
 }
 
