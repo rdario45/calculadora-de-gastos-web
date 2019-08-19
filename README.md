@@ -13,3 +13,4 @@ librerias
 - axios
 - alertify
 - lodash
+- Numeral.js
