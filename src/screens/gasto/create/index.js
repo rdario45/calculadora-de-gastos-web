@@ -11,7 +11,7 @@ const ButtonSection = ({ clickHandler }) => (
   <span>
     <div className="bottom-border" />
     <ButtonToolbar className="buttons-block">
-      <Button variant="outline-primary" onClick={clickHandler} >Crear Gasto</Button>
+      <Button variant="outline-dark" onClick={clickHandler} >Crear Gasto</Button>
     </ButtonToolbar>
   </span>
 );

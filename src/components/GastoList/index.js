@@ -5,8 +5,12 @@ import './index.css'
 const GastoList = ({ gastos, onRemove, onUpdate }) => {
   return (
     <div className="gasto-list">
-      { gastos.map(gasto => 
-        <GastoListItem key={gasto.id} gasto={gasto} onRemove={onRemove} onUpdate={onUpdate}/>
+      {gastos.map(gasto =>
+        <GastoListItem
+          key={gasto.id}
+          gasto={gasto}
+          onRemove={onRemove}
+          onUpdate={onUpdate} />
       )}
     </div>
   )

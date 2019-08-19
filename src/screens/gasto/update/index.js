@@ -11,7 +11,7 @@ const ButtonSection = ({ clickHandler }) => (
   <span>
     <div className="bottom-border" />
     <ButtonToolbar className="buttons-block">
-      <Button variant="outline-primary" onClick={clickHandler} > Actualizar Gasto </Button>
+      <Button variant="outline-dark" onClick={clickHandler} > Actualizar Gasto </Button>
     </ButtonToolbar>
   </span>
 );
@@ -20,20 +20,26 @@ class GastoUpdateScreen extends Component {
 
   constructor(props) {
     super(props)
-    const gasto = get(props, 'location.gasto', {})
+    const params = get(props, 'location.state', {})
     this.state = {
       trySubmit: false,
-      gasto
+      id: params.id
     }
   }
 
   statusCode = assign({
-    '200': () => this.onEditSuccess(),
+    '200_load': (data) => this.onLoadSuccess(data),
+    '200_update': () => this.onEditSuccess(),
     base: () => this.onFailure()
   }, commons.UknownAlertObject)
 
-  handleRequest(status) {
-    return (this.statusCode[status] || this.statusCode.base)()
+  handleRequest(status, data) {
+    return (this.statusCode[status] || this.statusCode.base)(data)
+  }
+
+  onLoadSuccess = (data) => {
+    console.log(data)
+    this.setState({ gasto: data })
   }
 
   onEditSuccess = () => {
@@ -45,9 +51,16 @@ class GastoUpdateScreen extends Component {
     alertify.notify(`${message}`, 'error', 3);
   }
 
+  componentWillMount() {
+    const { id } = this.state
+    gastosServices.get(id).then(response => {
+      this.handleRequest(`${response.status}_load`, response.data)
+    })
+  }
+
   submitHandler = (gasto) => {
     gastosServices.update(gasto).then((response) => {
-      this.handleRequest(response.status)
+      this.handleRequest(`${response.status}_update`)
     })
   }
 
@@ -75,6 +88,10 @@ class GastoUpdateScreen extends Component {
   }
 
   render() {
+    const { gasto } = this.state
+    // console.log('state', JSON.stringify(this.state))
+    console.log('gasto', JSON.stringify(gasto))
+
     return (
       <div className="gasto-update-container">
         {this.renderRedirect()}
@@ -85,7 +102,7 @@ class GastoUpdateScreen extends Component {
                 <Card.Title> <GoBack /> Editar Gasto <hr /> </Card.Title>
               </div>
               <div className="flex-item-body">
-                <GastoForm defaultData={this.state.gasto} send={this.submitHandler} trySubmit={this.state.trySubmit} />
+                {gasto && <GastoForm defaultData={gasto} send={this.submitHandler} trySubmit={this.state.trySubmit} />}
               </div>
               <div className="flex-item-bottom">
                 <ButtonSection clickHandler={this.clickHandler} />

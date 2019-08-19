@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, ButtonToolbar, Button } from 'react-bootstrap';
+import { Card, ButtonToolbar, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import alertify from 'alertifyjs'
@@ -10,16 +10,28 @@ import './index.css'
 
 const ButtonSection = () => (
   <ButtonToolbar className="buttons-block">
-    <Link to={'/add'}><Button variant="outline-primary"> Crear Gasto </Button></Link>
+    <Link to={'/add'}><Button variant="outline-dark"> Crear Gasto </Button></Link>
   </ButtonToolbar>
 );
+
+const TotalSection = (total) => (
+  <div>
+    <Container className="top-padding bottom-border">
+      <Row>
+        <Col xs={8}> <div className="float-right"> <h5> TOTAL </h5> </div> </Col>
+        <Col xs={4} className="valor-gasto"> {`$1.407.000`} </Col>
+      </Row>
+    </Container>
+  </div>
+)
 
 class GastoListScreen extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      gastos: []
+      gastos: [],
+      total: 0
     }
   }
 
@@ -60,8 +72,8 @@ class GastoListScreen extends Component {
     })
   }
 
-  onUpdate = (gasto) => {
-    this.redirectTo('/edit', gasto)
+  onUpdate = (id) => {
+    this.redirectTo('/edit', { id })
   }
 
   // TODO make a service
@@ -72,17 +84,18 @@ class GastoListScreen extends Component {
   renderRedirect = () => {
     const { redirect } = this.state
     if (!isEmpty(redirect)) {
+      console.log('redirect', redirect)
       return <Redirect
         to={{
           pathname: redirect.url,
-          gasto: assign(redirect.data)
+          state: assign(redirect.data)
         }}
       />
     }
   }
 
   render() {
-    const { gastos } = this.state
+    const { total, gastos } = this.state
     return (
       <div className="gasto-list-container">
         {this.renderRedirect()}
@@ -96,6 +109,7 @@ class GastoListScreen extends Component {
                 <GastoList gastos={gastos} onRemove={this.onRemove} onUpdate={this.onUpdate} />
               </div>
               <div className="flex-item-bottom">
+                <TotalSection total={total} />
                 <ButtonSection clickHandler={this.clickHandler} />
               </div>
             </div>

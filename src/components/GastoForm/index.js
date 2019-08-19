@@ -15,7 +15,7 @@ class GastoForm extends Component {
       titulo: defaultData.titulo || '',
       tipo: defaultData.tipo || 'COMPRA',
       descripcion: defaultData.descripcion || '',
-      valor: defaultData.valor || 0,
+      valor: defaultData.valor || '',
       fecha: moment(defaultData.fecha) || moment(),
       errors: {}
     }
@@ -171,7 +171,7 @@ class GastoForm extends Component {
                   className={[!isEmpty(errors.descripcion) && 'border-error']}
                   name='descripcion'
                   type="text"
-                  placeholder="descripcion"
+                  placeholder="descripcion (opcional)"
                   value={descripcion}
                   onChange={this.handleChange}
                   disabled={disabled}
@@ -190,6 +190,8 @@ class GastoForm extends Component {
                   className={[!isEmpty(errors.fecha) && 'border-error']}
                   defaultValue={fecha}
                   inputProps={{ disabled }}
+                  dateFormat={"YYYY-MM-DD"}
+                  timeFormat={false}
                 />
                 {errors.fecha && errors.fecha.map((val, key) =>
                   <span key={key} className="error">{`* ${val}`}</span>
